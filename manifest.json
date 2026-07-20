@@ -47,12 +47,6 @@
       "versionName": "1.0.9",
       "apkUrl": "https://github.com/simon-liesinger/app-hub/releases/download/music-player-v9/music-player.apk",
       "description": "Imports Spotify playlists, fetches audio, and plays them locally."
-    },
-    {
-      "name": "Music Player (old)",
-      "packageName": "com.claude.musicplayer",
-      "deprecated": true,
-      "description": "Local-files player (VLC-style). Superseded by Music Player."
     }
   ]
 }
