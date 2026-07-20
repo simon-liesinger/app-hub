@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Rounded-square hub background -->
+    <path
+        android:fillColor="#4F46E5"
+        android:pathData="M34,26 L74,26 A8,8 0 0 1 82,34 L82,74 A8,8 0 0 1 74,82 L34,82 A8,8 0 0 1 26,74 L26,34 A8,8 0 0 1 34,26 Z" />
+    <!-- Download arrow shaft -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M50,36 L58,36 L58,54 L50,54 Z" />
+    <!-- Download arrow head -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M42,52 L66,52 L54,66 Z" />
+    <!-- Tray / install line -->
+    <path
+        android:fillColor="#A5B4FC"
+        android:pathData="M38,70 L70,70 L70,74 L38,74 Z" />
+</vector>

@@ -1,0 +1,12 @@
+{
+  "apps": [
+    {
+      "name": "App Hub",
+      "packageName": "com.simon.apphub",
+      "versionCode": 1,
+      "versionName": "1.0",
+      "apkUrl": "https://github.com/simon-liesinger/app-hub/releases/download/v1/app-hub.apk",
+      "description": "Installs and keeps Simon's apps up to date."
+    }
+  ]
+}
