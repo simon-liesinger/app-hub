@@ -194,8 +194,12 @@ public class MainActivity extends Activity {
 
     private void renderList(List<AppEntry> apps) {
         list.removeAllViews();
+        // Float apps that need attention (updates, then not-installed) to the top;
+        // up-to-date apps sink to the bottom. Stable within each group.
+        List<AppEntry> sorted = new ArrayList<>(apps);
+        java.util.Collections.sort(sorted, (x, y) -> attentionRank(x) - attentionRank(y));
         int needAction = 0;
-        for (AppEntry a : apps) {
+        for (AppEntry a : sorted) {
             int status = statusOf(a);
             if (status != UP_TO_DATE) needAction++;
             list.addView(buildCard(a, status));
@@ -464,6 +468,15 @@ public class MainActivity extends Activity {
     }
 
     // ------------------------------------------------------------------ package inspection
+
+    // Lower rank = higher on the list. Updates first, then not-installed, then up-to-date.
+    private int attentionRank(AppEntry a) {
+        switch (statusOf(a)) {
+            case UPDATE_AVAILABLE: return 0;
+            case NOT_INSTALLED: return 1;
+            default: return 2;
+        }
+    }
 
     private int statusOf(AppEntry a) {
         long installed = installedVersionCode(a.packageName);
