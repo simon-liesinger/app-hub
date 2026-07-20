@@ -3,10 +3,56 @@
     {
       "name": "App Hub",
       "packageName": "com.simon.apphub",
+      "versionCode": 3,
+      "versionName": "1.2",
+      "apkUrl": "https://github.com/simon-liesinger/app-hub/releases/download/v3/app-hub.apk",
+      "description": "Installs and keeps Simon's apps up to date."
+    },
+    {
+      "name": "Grimoire",
+      "packageName": "com.botc.grimoire.experimental.dev",
+      "versionCode": 1,
+      "versionName": "1.0-dev",
+      "apkUrl": "https://github.com/simon-liesinger/app-hub/releases/download/grimoire-v1/grimoire.apk",
+      "description": "Blood on the Clocktower storyteller grimoire (experimental branch)."
+    },
+    {
+      "name": "Adaptive Timers",
+      "packageName": "com.example.adaptivetimers",
       "versionCode": 2,
       "versionName": "1.1",
-      "apkUrl": "https://github.com/simon-liesinger/app-hub/releases/download/v2/app-hub.apk",
-      "description": "Installs and keeps Simon's apps up to date."
+      "apkUrl": "https://github.com/simon-liesinger/app-hub/releases/download/adaptive-timers-v2/adaptive-timers.apk",
+      "description": "Focus timer that ratchets session timing based on how you actually work."
+    },
+    {
+      "name": "Tasks",
+      "packageName": "com.example.todoapp",
+      "versionCode": 1,
+      "versionName": "1.0",
+      "apkUrl": "https://github.com/simon-liesinger/app-hub/releases/download/tasks-v1/tasks.apk",
+      "description": "Simple to-do / task list."
+    },
+    {
+      "name": "Ads Begone",
+      "packageName": "com.adsbegone.app",
+      "versionCode": 1,
+      "versionName": "1.0",
+      "apkUrl": "https://github.com/simon-liesinger/app-hub/releases/download/ads-begone-v1/ads-begone.apk",
+      "description": "On-device APK ad-patcher; installs a patched, ad-free copy alongside the original."
+    },
+    {
+      "name": "Music Player",
+      "packageName": "com.musicdownloader.app",
+      "versionCode": 9,
+      "versionName": "1.0.9",
+      "apkUrl": "https://github.com/simon-liesinger/app-hub/releases/download/music-player-v9/music-player.apk",
+      "description": "Imports Spotify playlists, fetches audio, and plays them locally."
+    },
+    {
+      "name": "Music Player (old)",
+      "packageName": "com.claude.musicplayer",
+      "deprecated": true,
+      "description": "Local-files player (VLC-style). Superseded by Music Player."
     }
   ]
 }

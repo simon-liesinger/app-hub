@@ -86,6 +86,7 @@ public class MainActivity extends Activity {
         String versionName;
         String apkUrl;
         String description;
+        boolean deprecated;
     }
 
     // ------------------------------------------------------------------ lifecycle
@@ -201,7 +202,7 @@ public class MainActivity extends Activity {
         int needAction = 0;
         for (AppEntry a : sorted) {
             int status = statusOf(a);
-            if (status != UP_TO_DATE) needAction++;
+            if (!a.deprecated && status != UP_TO_DATE) needAction++;
             list.addView(buildCard(a, status));
         }
         if (apps.isEmpty()) {
@@ -233,7 +234,7 @@ public class MainActivity extends Activity {
         LinearLayout card = new LinearLayout(this);
         card.setOrientation(LinearLayout.VERTICAL);
         GradientDrawable bg = new GradientDrawable();
-        bg.setColor(C_CARD);
+        bg.setColor(a.deprecated ? C_BG : C_CARD);
         bg.setCornerRadius(dp(16));
         bg.setStroke(dp(1), C_BORDER);
         card.setBackground(bg);
@@ -254,10 +255,11 @@ public class MainActivity extends Activity {
         name.setTextColor(C_TEXT);
         name.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         name.setTypeface(Typeface.DEFAULT_BOLD);
+        if (a.deprecated) name.setTextColor(C_MUTED);
         topRow.addView(name, new LinearLayout.LayoutParams(0,
                 ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
 
-        topRow.addView(buildChip(status));
+        topRow.addView(buildChip(a, status));
         card.addView(topRow);
 
         // Description
@@ -282,7 +284,13 @@ public class MainActivity extends Activity {
         Button action = new Button(this);
         action.setAllCaps(false);
         action.setTextColor(Color.WHITE);
-        if (status == NOT_INSTALLED) {
+        if (a.deprecated) {
+            styleButton(action, C_BORDER, C_MUTED);
+            action.setTextColor(C_MUTED);
+            long inst = installedVersionCode(a.packageName);
+            action.setText(inst < 0 ? "Deprecated" : "Deprecated · uninstall from Settings");
+            action.setEnabled(false);
+        } else if (status == NOT_INSTALLED) {
             styleButton(action, C_BLUE, Color.WHITE);
             action.setText("Install");
             action.setOnClickListener(v -> onInstallClick(a, action));
@@ -302,11 +310,12 @@ public class MainActivity extends Activity {
         return card;
     }
 
-    private View buildChip(int status) {
+    private View buildChip(AppEntry a, int status) {
         TextView chip = new TextView(this);
         int color;
         String text;
-        if (status == NOT_INSTALLED) { color = C_BLUE; text = "Not installed"; }
+        if (a.deprecated) { color = C_MUTED; text = "Deprecated"; }
+        else if (status == NOT_INSTALLED) { color = C_BLUE; text = "Not installed"; }
         else if (status == UPDATE_AVAILABLE) { color = C_ORANGE; text = "Update"; }
         else { color = C_GREEN; text = "Installed"; }
         chip.setText(text);
@@ -322,6 +331,12 @@ public class MainActivity extends Activity {
     }
 
     private String versionLine(AppEntry a, int status) {
+        if (a.deprecated) {
+            long inst = installedVersionCode(a.packageName);
+            return inst < 0 ? "No longer maintained"
+                    : "Installed v" + installedVersionName(a.packageName)
+                      + " · no longer maintained";
+        }
         String latest = "v" + a.versionName + " (" + a.versionCode + ")";
         if (status == NOT_INSTALLED) {
             return "Latest: " + latest;
@@ -469,8 +484,10 @@ public class MainActivity extends Activity {
 
     // ------------------------------------------------------------------ package inspection
 
-    // Lower rank = higher on the list. Updates first, then not-installed, then up-to-date.
+    // Lower rank = higher on the list. Updates first, then not-installed, then
+    // up-to-date, then deprecated apps sink to the very bottom.
     private int attentionRank(AppEntry a) {
+        if (a.deprecated) return 3;
         switch (statusOf(a)) {
             case UPDATE_AVAILABLE: return 0;
             case NOT_INSTALLED: return 1;
@@ -600,6 +617,7 @@ public class MainActivity extends Activity {
             e.versionName = o.optString("versionName", "?");
             e.apkUrl = o.optString("apkUrl", "");
             e.description = o.optString("description", "");
+            e.deprecated = o.optBoolean("deprecated", false);
             out.add(e);
         }
         return out;

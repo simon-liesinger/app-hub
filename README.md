@@ -24,23 +24,50 @@ it and tap Update.
   (trust-on-first-use — blocks tampered downloads), then launches the installer.
 - APK downloads are restricted to `github.com` / `githubusercontent.com` hosts.
 
-## Adding another app to the catalog
+## Adding a project to the catalog (new or existing)
 
-When you want App Hub to monitor one of your other apps:
+Use [`tools/add-app.sh`](tools/add-app.sh). Point it at a **built APK** and it does the
+rest — reads the package name + version straight out of the APK, publishes the APK as a
+GitHub release asset in this repo, and upserts the entry in [`manifest.json`](manifest.json)
+(keyed by package name, so re-running the same command just updates that app).
 
-1. Publish that app's APK as a GitHub release asset (any repo of yours).
-2. Add an entry to [`manifest.json`](manifest.json):
-   ```json
-   {
-     "name": "My Other App",
-     "packageName": "com.simon.otherapp",
-     "versionCode": 3,
-     "versionName": "1.2",
-     "apkUrl": "https://github.com/simon-liesinger/otherapp/releases/download/v3/otherapp.apk",
-     "description": "What it does."
-   }
-   ```
-3. Commit. Every phone running App Hub will see it on the next refresh.
+```bash
+# 1. Build the app's APK however that project builds (debug is fine — see note below).
+#    e.g. for a gradle project:
+JAVA_HOME=/opt/homebrew/opt/openjdk@17 ANDROID_HOME=$HOME/Library/Android/sdk \
+  ./gradlew assembleDebug
+
+# 2. Add / update it in the catalog:
+tools/add-app.sh \
+  --apk path/to/app-debug.apk \
+  --name "My App" \
+  --desc "What it does."
+
+# 3. Commit the manifest change and push (the release is already live):
+git -C ~/app-hub commit -am "catalog: add My App" && git -C ~/app-hub push
+```
+
+Every phone running App Hub sees it on the next refresh. To ship a **new version** of an
+app later, rebuild with a higher `versionCode` and run the exact same `add-app.sh` command —
+it publishes a new release and bumps the entry; phones then show an **Update**.
+
+### Marking an app deprecated
+
+To flag an app as superseded (greyed out, sorted to the bottom, no install button):
+
+```bash
+tools/add-app.sh --name "Old App" --package com.simon.oldapp --deprecated \
+  --desc "Replaced by New App."
+```
+
+### A note on signing
+
+`add-app.sh` publishes whatever APK you hand it. Because App Hub verifies (TOFU) that an
+update is signed with the **same key** as the already-installed copy, keep signing each app
+consistently. Debug builds on this machine all share `~/.android/debug.keystore`, so they
+stay mutually consistent — that's what the current catalog uses. Apps whose original release
+was signed with a different key should be re-signed with that same key (or friends reinstall
+fresh, which always works).
 
 ## Releasing a new version of App Hub itself
 
