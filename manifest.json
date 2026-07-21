@@ -9,14 +9,6 @@
       "description": "Installs and keeps Simon's apps up to date."
     },
     {
-      "name": "Grimoire",
-      "packageName": "com.botc.grimoire.experimental.dev",
-      "versionCode": 1,
-      "versionName": "1.0-dev",
-      "apkUrl": "https://github.com/simon-liesinger/app-hub/releases/download/grimoire-v1/grimoire.apk",
-      "description": "Blood on the Clocktower storyteller grimoire (experimental branch)."
-    },
-    {
       "name": "Adaptive Timers",
       "packageName": "com.example.adaptivetimers",
       "versionCode": 2,
@@ -47,6 +39,14 @@
       "versionName": "1.0.9",
       "apkUrl": "https://github.com/simon-liesinger/app-hub/releases/download/music-player-v9/music-player.apk",
       "description": "Imports Spotify playlists, fetches audio, and plays them locally."
+    },
+    {
+      "name": "Grimoire",
+      "packageName": "com.botc.grimoire.experimental.dev",
+      "versionCode": 2,
+      "versionName": "1.1-dev",
+      "apkUrl": "https://github.com/simon-liesinger/app-hub/releases/download/grimoire-v2/grimoire.apk",
+      "description": "Blood on the Clocktower storyteller grimoire (experimental branch)."
     }
   ]
 }
